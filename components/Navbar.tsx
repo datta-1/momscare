@@ -1,35 +1,18 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Heart, Menu, X, Sun, Moon } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import { getCurrentUser, logout } from '@/lib/appwrite'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const [user, setUser] = useState<any>(null)
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
 
-  useEffect(() => {
-    checkUser()
-  }, [])
-
-  const checkUser = async () => {
-    const currentUser = await getCurrentUser()
-    setUser(currentUser)
-  }
-
-  const handleLogout = async () => {
-    await logout()
-    setUser(null)
-    window.location.href = '/'
-  }
-
-  const navigation = user ? [
+  const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Resources', href: '/resources' },
     { name: 'Appointments', href: '/appointments' },
@@ -37,8 +20,6 @@ const Navbar = () => {
     { name: 'Medical Documents', href: '/medicaldocuments' },
     { name: 'Chat', href: '/chat' },
     { name: 'Dashboard', href: '/dashboard' },
-  ] : [
-    { name: 'Home', href: '/' },
   ]
 
   return (
@@ -75,19 +56,6 @@ const Navbar = () => {
             >
               {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
-
-            {user ? (
-              <Button onClick={handleLogout}>Logout</Button>
-            ) : (
-              <div className="flex space-x-2">
-                <Button variant="ghost" asChild>
-                  <Link href="/login">Login</Link>
-                </Button>
-                <Button asChild>
-                  <Link href="/signup">Sign Up</Link>
-                </Button>
-              </div>
-            )}
           </div>
 
           {/* Mobile menu button */}
@@ -131,26 +99,6 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
-            {user ? (
-              <Button
-                className="w-full mt-2"
-                onClick={() => {
-                  handleLogout()
-                  setIsOpen(false)
-                }}
-              >
-                Logout
-              </Button>
-            ) : (
-              <div className="flex flex-col space-y-2 p-3">
-                <Button variant="ghost" asChild>
-                  <Link href="/login">Login</Link>
-                </Button>
-                <Button asChild>
-                  <Link href="/signup">Sign Up</Link>
-                </Button>
-              </div>
-            )}
           </div>
         </div>
       )}

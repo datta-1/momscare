@@ -6,8 +6,6 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
-import { getCurrentUser } from "@/lib/appwrite";
 
 const client = new Client()
   .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
@@ -21,27 +19,10 @@ export default function Resources() {
   const [blogs, setBlogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [user, setUser] = useState<any>(null);
-  const router = useRouter();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const currentUser = await getCurrentUser();
-        if (!currentUser) {
-          router.push('/login');
-          return;
-        }
-        setUser(currentUser);
-        fetchBlogs();
-      } catch (error) {
-        console.error("Authentication error:", error);
-        router.push('/login');
-      }
-    };
-
-    checkAuth();
-  }, [router]);
+    fetchBlogs();
+  }, []);
 
   // Function to fetch blogs directly from Appwrite
   const fetchBlogs = async () => {
@@ -95,14 +76,6 @@ export default function Resources() {
         />
         <p className="mt-4 text-lg font-medium text-gray-700">Loading...</p>
       </motion.div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p>Please login to access resources.</p>
-      </div>
     );
   }
 
