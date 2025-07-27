@@ -25,7 +25,7 @@ export default function Home() {
               Get personalized antenatal care advice, appointment reminders, and 24/7 support
             </p>
             <Button size="lg" asChild className="text-lg">
-              <Link href="/signup">Start Chatting Now</Link>
+              <Link href="/chat">Start Chatting Now</Link>
             </Button>
           </div>
         </div>
@@ -81,7 +81,7 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" asChild>
-              <Link href="/signup">Create Free Account</Link>
+              <Link href="/chat">Start Free Chat</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
               <Link href="/resources">Browse Resources</Link>
